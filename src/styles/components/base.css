@@ -1,0 +1,14 @@
+@import "typography.css";
+@import "button.css";
+@import "searchBar.css";
+
+:root {
+    --purlple: #5954D2;
+    --blue: #3478D7;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}	

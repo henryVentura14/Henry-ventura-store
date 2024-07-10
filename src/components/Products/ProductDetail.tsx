@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { useRouter } from "next/router";
-import { useProductContext } from "../context/ProductContext";
-import { fetchProductById, deleteProduct as deleteProductAPI } from "../services/productService";
+import { useProductContext } from "../../context/ProductContext";
+import { fetchProductById, deleteProduct as deleteProductAPI } from "../../services/productService";
 import Modal from "./Modal";
 
 const ProductDetail = () => {
@@ -39,7 +39,7 @@ const ProductDetail = () => {
           <p className="mb-2">Description: {product.description}</p>
           <div className="relative w-full h-96">
             <Image src={product.image} alt={product.title} layout="fill" objectFit="cover" className="rounded-lg" />
-          </div>{" "}
+          </div>
           <div className="flex">
             <button onClick={() => setIsModalOpen(true)} className="mr-2 p-2 bg-blue-500 text-white rounded">
               Edit
