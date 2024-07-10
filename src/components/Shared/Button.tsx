@@ -1,12 +1,6 @@
+import { ButtonProps } from '@/types/Products.types';
 import Image from 'next/image';
 import React from 'react';
-
-interface ButtonProps {
-  label: string;
-  onClick?: () => void;
-  className?: string;
-  srcImg?: string;
-}
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, className, srcImg }) => {
   return (

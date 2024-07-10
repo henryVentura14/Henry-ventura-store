@@ -8,7 +8,7 @@ const Home = () => {
       <div className="min-h-screen bg-gray-50 p-4">
         <div className="max-w-7xl mx-auto">
           <ProductList />
-          <Modal /> {/* Modal is imported and used here */}
+          <Modal />
         </div>
       </div>
     </ProductProvider>

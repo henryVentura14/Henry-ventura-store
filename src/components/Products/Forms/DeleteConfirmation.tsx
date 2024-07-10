@@ -1,11 +1,8 @@
 import React from 'react';
 import { useProductContext } from '../../../context/ProductContext';
 import { deleteProduct as deleteProductService } from '../../../services/productService';
+import { DeleteConfirmationProps } from '@/types/Products.types';
 
-interface DeleteConfirmationProps {
-  productId: number;
-  onClose: () => void;
-}
 
 const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({ productId, onClose }) => {
   const { deleteProduct } = useProductContext();
@@ -22,7 +19,7 @@ const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({ productId, onCl
       <p>Are you sure you want to delete this product?</p>
       <div className="flex justify-end mt-4">
         <button type="button" onClick={onClose} className="mr-2 p-2 border border-gray-300 rounded">Cancel</button>
-        <button onClick={handleDelete} className="p-2 bg-red-500 text-white rounded">Delete</button>
+        <button type='button' onClick={handleDelete} className="p-2 bg-red-500 text-white rounded">Delete</button>
       </div>
     </div>
   );

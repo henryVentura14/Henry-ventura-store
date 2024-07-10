@@ -1,13 +1,13 @@
-.icon-search{
-    position: relative;
-    top: -24px;
-    left: 250px;
+.icon-search {
+  position: relative;
+  top: -24px;
+  left: 250px;
 }
 
-.searchbar-input{
-    border-radius: 10px;
-    width: 280px;
-    height: 30px;
-    border: solid 1px var(--blue);
-    font-size: 10px;
+.searchbar-input {
+  border-radius: 10px;
+  width: 280px;
+  height: 30px;
+  border: solid 1px var(--blue);
+  font-size: 10px;
 }

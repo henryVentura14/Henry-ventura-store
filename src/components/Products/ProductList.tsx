@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { useProductContext } from "../../context/ProductContext";
 import { fetchProducts } from "../../services/productService";
 import Header from "./Header";
@@ -6,7 +7,6 @@ import SearchBar from "./SearchBar";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/products.utils";
 import DeleteConfirmation from "./Forms/DeleteConfirmation";
-import CreateEditForm from "./Forms/CreateEditForm";
 
 const ProductList = () => {
   const { products, setProducts, setModalContent, setModalOpen } = useProductContext();
@@ -32,12 +32,7 @@ const ProductList = () => {
     }
   };
 
-  const handleEditProductClick = (product) => {
-    setModalContent(<CreateEditForm product={product} onClose={handleCloseModal} />);
-    setModalOpen(true);
-  };
-
-  const handleDeleteProductClick = (productId) => {
+  const handleDeleteProductClick = (productId: number) => {
     setModalContent(<DeleteConfirmation productId={productId} onClose={handleCloseModal} />);
     setModalOpen(true);
   };
@@ -79,16 +74,12 @@ const ProductList = () => {
               <td className="my-1 px-4 max-w-[230px] line-clamp-2">{product.description}</td>
               <td className="my-1 px-4">{formatCurrency(product.price)}</td>
               <td className="my-1 px-4 flex space-x-3">
-                <button
-                  type="button"
-                  onClick={() => handleEditProductClick(product)}
-                  className="text-white bg-blue-500 hover:bg-blue-700 rounded-full py-2 px-4"
-                >
+                <Link href={`/products/${product.id}`} className="text-white bg-blue-500 hover:bg-blue-700 rounded-full py-2 px-4">
                   Ver
-                </button>
-                <button type="button" onClick={() => handleEditProductClick(product)}>
+                </Link>
+                <Link href={`/products/edit/${product.id}`}>
                   <Image src="/assets/icons/edit.svg" alt="edit" width={24} height={24} />
-                </button>
+                </Link>
                 <button type="button" onClick={() => handleDeleteProductClick(product.id)}>
                   <Image src="/assets/icons/trash.svg" alt="delete" width={24} height={24} />
                 </button>

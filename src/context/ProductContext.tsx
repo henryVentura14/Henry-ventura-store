@@ -1,25 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-}
-
-interface ProductContextType {
-  products: Product[];
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-  addProduct: (product: Product) => void;
-  updateProduct: (updatedProduct: Product) => void;
-  deleteProduct: (id: number) => void;
-  modalContent: React.ReactNode;
-  setModalContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
-  isModalOpen: boolean;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { Product, ProductContextType } from '@/types/Products.types';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { fetchProducts } from '@/services/productService';
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
@@ -47,6 +28,15 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const deleteProduct = (id: number) => {
     setProducts(products.filter(product => product.id !== id));
   };
+
+  const loadProducts = async () => {
+    const products = await fetchProducts();
+    setProducts(products);
+  };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
   return (
     <ProductContext.Provider value={{ products, setProducts, addProduct, updateProduct, deleteProduct, modalContent, setModalContent, isModalOpen, setModalOpen }}>

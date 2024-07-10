@@ -1,3 +1,5 @@
+import { Product } from "@/types/Products.types";
+
 export const truncateText = (text: string, maxLength: number) => {
   if (text.length > maxLength) {
     return text.slice(0, maxLength) + "...";
@@ -11,4 +13,8 @@ export const formatCurrency = (value: number) => {
     currency: "COP",
     minimumFractionDigits: 0,
   }).format(value);
+};
+
+export const averageRating = (product: Product): number => {
+  return product.rating.rate / product.rating.count;
 };

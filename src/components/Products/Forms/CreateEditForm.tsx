@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
-import { useProductContext } from '../../../context/ProductContext';
-import { createProduct, updateProduct as updateProductService } from '../../../services/productService';
-
-interface CreateEditFormProps {
-  onClose: () => void;
-  product?: any;
-}
+import React, { useState } from "react";
+import { useProductContext } from "../../../context/ProductContext";
+import { createProduct, updateProduct as updateProductService } from "../../../services/productService";
+import Image from "next/image";
+import { CreateEditFormProps } from "@/types/Products.types";
 
 const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => {
   const { addProduct, updateProduct } = useProductContext();
-  const [formData, setFormData] = useState(product || {
-    title: '',
+  const initialFormData = product || {
+    title: "",
     price: 0,
-    description: '',
-    category: '',
-    images: []
-  });
-  const [imageLink, setImageLink] = useState('');
+    description: "",
+    category: "",
+    images: [],
+  };
+  const [formData, setFormData] = useState(initialFormData);
+  const [imageLink, setImageLink] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -32,14 +30,16 @@ const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => 
         ...formData,
         images: [...formData.images, imageLink],
       });
-      setImageLink('');
+      setImageLink("");
     }
   };
 
   const handleRemoveImage = (index: number) => {
+    const updatedImages = [...formData.images];
+    updatedImages.splice(index, 1);
     setFormData({
       ...formData,
-      images: formData.images.filter((_, i) => i !== index),
+      images: updatedImages,
     });
   };
 
@@ -55,15 +55,18 @@ const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => 
     onClose();
   };
 
+  const imagesArray = Array.isArray(formData.images) ? formData.images : [formData.images];
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg">
-      <h2 className="text-xl font-semibold mb-6">{product ? 'Editar Producto' : 'Crear Producto'}</h2>
+      <h2 className="text-xl font-semibold mb-6">{product ? "Editar Producto" : "Crear Producto"}</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex space-x-6">
           <div className="flex-1">
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
               <input
+                title="Nombre del producto"
                 type="text"
                 name="title"
                 value={formData.title}
@@ -74,6 +77,7 @@ const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
               <select
+                title="Categoría del producto"
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
@@ -86,6 +90,7 @@ const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
               <textarea
+                title="Descripción del producto"
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
@@ -96,6 +101,7 @@ const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Tarifa base</label>
               <input
+                title="Tarifa base del producto"
                 type="number"
                 name="price"
                 value={formData.price}
@@ -115,13 +121,15 @@ const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => 
                   className="p-3 border border-gray-300 rounded flex-grow"
                   placeholder="Añadir link de imagen"
                 />
-                <button type="button" onClick={handleAddImage} className="p-3 bg-blue-500 text-white rounded">Agregar</button>
+                <button type="button" onClick={handleAddImage} className="p-3 bg-blue-500 text-white rounded">
+                  Agregar
+                </button>
               </div>
             </div>
             <div className="flex space-x-2 overflow-x-auto">
-              {formData.images.map((image, index) => (
+              {imagesArray.map((image: string, index: number) => (
                 <div key={index} className="relative w-24 h-24 flex-shrink-0">
-                  <img src={image} alt={`Imagen ${index + 1}`} className="w-full h-full object-cover rounded" />
+                  <Image src={image} alt={`Imagen ${index + 1}`} className="w-full h-full object-cover rounded" />
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(index)}
@@ -135,8 +143,9 @@ const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => 
           </div>
         </div>
         <div className="flex justify-end mt-6">
-          <button type="button" onClick={onClose} className="mr-2 p-3 border border-gray-300 rounded">Cancelar</button>
-          <button type="submit" className="p-3 bg-blue-500 text-white rounded">{product ? 'Actualizar' : 'Guardar'}</button>
+          <button type="submit" className="p-3 bg-blue-500 text-white rounded">
+            {product ? "Actualizar" : "Guardar"}
+          </button>
         </div>
       </form>
     </div>
