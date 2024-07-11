@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { useProductContext } from "../../../context/ProductContext";
 import { createProduct, updateProduct as updateProductService } from "../../../services/productService";
 import Image from "next/image";
-import Link from "next/link";
 import { CreateEditFormProps } from "@/types/Products.types";
 import Button from "@/components/Shared/Button";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled }) => {
   const router = useRouter();
-  const { addProduct, updateProduct } = useProductContext();
+  const { addProduct, updateProduct, setModalContent, setModalOpen } = useProductContext();
 
   const initialFormData = product || {
     title: "",
@@ -24,7 +24,12 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
-    const isValid = formData.title !== "" && formData.price > 0 && formData.description !== "" && formData.category !== "" && formData.image.length > 0;
+    const isValid =
+      formData.title !== "" &&
+      formData.price > 0 &&
+      formData.description !== "" &&
+      formData.category !== "" &&
+      formData.image.length > 0;
     setIsFormValid(isValid);
   }, [formData]);
 
@@ -84,13 +89,22 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
   const imagesArray = Array.isArray(formData.image) ? formData.image : [formData.image];
 
   const handleEditProduct = () => {
-    if (product)
-    router.push(`/products/edit/${product.id}`);
+    if (product) router.push(`/products/edit/${product.id}`);
   };
 
   const handleViewProduct = () => {
-    if (product)
-    router.push(`/products/${product.id}`);
+    if (product) router.push(`/products/${product.id}`);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setModalContent(null);
+  };
+
+  const handleDeleteProductClick = () => {
+    console.log("handleDeleteProductClick");
+    setModalContent(<DeleteConfirmation productId={product.id} onClose={handleCloseModal} />);
+    setModalOpen(true);
   };
 
   return (
@@ -106,7 +120,7 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className={`p-3 border border-gray-300 rounded-2xl w-full h-9 text-sm ${disabled ? 'bg-gray-200' : ''}`}
+                className={`p-3 border border-gray-300 rounded-2xl w-full h-9 text-sm ${disabled ? "bg-gray-200" : ""}`}
                 required
                 disabled={disabled}
               />
@@ -118,7 +132,9 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className={`px-3 py-2 border border-gray-300 rounded-lg w-full h-10 text-sm appearance-none ${disabled ? 'bg-gray-200' : ''}`}
+                className={`px-3 py-2 border border-gray-300 rounded-lg w-full h-10 text-sm appearance-none ${
+                  disabled ? "bg-gray-200" : ""
+                }`}
                 required
                 disabled={disabled}
               >
@@ -138,7 +154,9 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className={`p-3 border border-gray-300 rounded-2xl w-full h-24 resize-none text-sm ${disabled ? 'bg-gray-200' : ''}`}
+                className={`p-3 border border-gray-300 rounded-2xl w-full h-24 resize-none text-sm ${
+                  disabled ? "bg-gray-200" : ""
+                }`}
                 rows={4}
                 required
                 disabled={disabled}
@@ -152,7 +170,7 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
-                className={`p-3 border border-gray-300 rounded-2xl w-full h-9 text-sm ${disabled ? 'bg-gray-200' : ''}`}
+                className={`p-3 border border-gray-300 rounded-2xl w-full h-9 text-sm ${disabled ? "bg-gray-200" : ""}`}
                 required
                 disabled={disabled}
               />
@@ -172,7 +190,9 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
                     setImageLink(e.target.value);
                     validateImageLink(e.target.value);
                   }}
-                  className={`p-3 border border-gray-300 rounded-2xl w-full h-9 text-sm ${disabled ? 'bg-gray-200' : ''}`}
+                  className={`p-3 border border-gray-300 rounded-2xl w-full h-9 text-sm ${
+                    disabled ? "bg-gray-200" : ""
+                  }`}
                   placeholder="Añadir link de imagen"
                   disabled={disabled}
                 />
@@ -180,7 +200,9 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
                   label="Agregar"
                   onClick={handleAddImage}
                   disabled={!isLinkValid || formData.image.length >= 5 || disabled}
-                  className={`text-white rounded-full bg-blue-500 w-16 h-9 px-2 ${(!isLinkValid || formData.image.length >= 5 || disabled) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`text-white rounded-full bg-blue-500 w-16 h-9 px-2 ${
+                    !isLinkValid || formData.image.length >= 5 || disabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 />
               </div>
             </div>
@@ -213,16 +235,16 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
               <Button
                 label="Volver"
                 onClick={onClose}
-                className="text-white py-2 px-4 rounded-full bg-gray-500 hover:bg-gray-700 text-xs w-20 h-10 mr-2"
+                className="p-2 border border-indigo-500 rounded-full text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white"
               />
               <Button
                 label="Eliminar"
-                onClick={() => console.log("Eliminar")}
-                className="text-white py-2 px-4 rounded-full bg-red-500 hover:bg-red-700 text-xs w-20 h-10 mr-2"
+                className="text-white py-2 px-4 rounded-full bg-red-500 hover:bg-red-700 text-xs ml-2"
+                onClick={handleDeleteProductClick}
               />
               <Button
                 label="Editar"
-                className="text-white py-2 px-4 rounded-full bg-red-500 hover:bg-red-700 text-xs w-20 h-10 mr-2"
+                className="text-white py-2 px-4 rounded-full bg-indigo-500 hover:bg-indigo-700 text-xs ml-2"
                 onClick={handleEditProduct}
               />
             </>
@@ -232,13 +254,15 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
                 type="button"
                 label="Cancelar"
                 onClick={handleViewProduct}
-                className="text-white py-2 px-4 rounded-full bg-gray-500 hover:bg-gray-700 text-xs w-20 h-10 mr-2"
+                className="p-2 border border-indigo-500 rounded-full text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white"
               />
               <Button
                 type="submit"
                 label="Guardar"
                 disabled={!isFormValid}
-                className={`text-white py-2 px-4 rounded-full bg-indigo-500 hover:bg-indigo-700 text-xs w-20 h-10 ${!isFormValid ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`text-white py-2 px-4 rounded-full bg-indigo-500 hover:bg-indigo-700 text-xs ml-2 ${
+                  !isFormValid ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               />
             </>
           )}
