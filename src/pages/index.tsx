@@ -5,7 +5,7 @@ import Modal from "../components/Shared/Modal";
 const Home = () => {
   return (
     <ProductProvider>
-      <div className="min-h-screen bg-gray-50 p-4">
+      <div className="min-h-screen bg-gray-100 p-4">
         <div className="mx-auto">
           <ProductList />
           <Modal />

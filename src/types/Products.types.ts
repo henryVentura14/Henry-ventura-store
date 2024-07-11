@@ -45,6 +45,7 @@ export interface ProductContextType {
   updateProduct: (updatedProduct: Product) => void;
   deleteProduct: (id: number) => void;
   modalContent: React.ReactNode;
+  loadProducts: () => Promise<void>;
   setModalContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
   isModalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;

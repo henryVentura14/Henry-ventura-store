@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from "react";
 import { fetchProducts } from "@/services/productService";
 import { Product, ProductContextType } from "@/types/Products.types";
 
@@ -24,9 +24,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateProduct = (updatedProduct: Product) => {
-    const updatedProducts = products.map((product) =>
-      product.id === updatedProduct.id ? updatedProduct : product
-    );
+    const updatedProducts = products.map((product) => (product.id === updatedProduct.id ? updatedProduct : product));
     setProducts(updatedProducts);
     localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
@@ -37,36 +35,36 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
-  const loadProducts = async () => {
-    const products = await fetchProducts();
-    setProducts(products);
-    localStorage.setItem("products", JSON.stringify(products));
-  };
-
-  useEffect(() => {
-    const localStorageProducts = localStorage.getItem("products");
-    if (localStorageProducts) {
-      setProducts(JSON.parse(localStorageProducts));
-    } else {
-      loadProducts();
+  const loadProducts = useCallback(async () => {
+    try {
+      const localStorageProducts = localStorage.getItem("products");
+      if (localStorageProducts) {
+        setProducts(JSON.parse(localStorageProducts));
+      } else {
+        const fetchedProducts = await fetchProducts();
+        localStorage.setItem("products", JSON.stringify(fetchedProducts));
+      }
+    } catch (error) {
+      console.error("Error loading products:", error);
     }
   }, []);
 
-  return (
-    <ProductContext.Provider
-      value={{
-        products,
-        setProducts,
-        addProduct,
-        updateProduct,
-        deleteProduct,
-        modalContent,
-        setModalContent,
-        isModalOpen,
-        setModalOpen,
-      }}
-    >
-      {children}
-    </ProductContext.Provider>
-  );
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
+  const contextValue: ProductContextType = {
+    products,
+    setProducts,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    loadProducts,
+    modalContent,
+    setModalContent,
+    isModalOpen,
+    setModalOpen,
+  };
+
+  return <ProductContext.Provider value={contextValue}>{children}</ProductContext.Provider>;
 };

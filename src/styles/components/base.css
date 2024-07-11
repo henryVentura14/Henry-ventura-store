@@ -2,6 +2,7 @@
 @import "button.css";
 @import "searchBar.css";
 @import "createEditForm.css";
+@import "imageUploader.css";
 
 :root {
   --purlple: #5954d2;

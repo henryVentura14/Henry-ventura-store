@@ -51,7 +51,7 @@ const ProductList = () => {
         </thead>
         <tbody className="interstate-regular text-xs">
           {filteredProducts.map((product) => (
-            <tr key={product.id}>
+            <tr key={product.id+product.title}>
               <td className="py-2 px-4 rounded">
                 <Image
                   src={Array.isArray(product.image) ? product.image[0] : product.image}

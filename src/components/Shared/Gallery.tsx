@@ -26,7 +26,7 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
       <div className="flex flex-col ml-4 space-y-2">
         {images.map((image, index) => (
           <div
-            key={index}
+            key={index+image}
             className={`relative w-24 h-24 cursor-pointer ${
               image === selectedImage ? 'shadow' : ''
             }`}

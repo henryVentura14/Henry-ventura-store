@@ -3,24 +3,26 @@ import { useRouter } from "next/router";
 import { useProductContext } from "../../../context/ProductContext";
 import { createProduct, updateProduct as updateProductService } from "../../../services/productService";
 import Image from "next/image";
-import { CreateEditFormProps } from "@/types/Products.types";
+import { CreateEditFormProps, Product } from "@/types/Products.types";
 import Button from "@/components/Shared/Button";
 import DeleteConfirmation from "./DeleteConfirmation";
 import Gallery from "../../Shared/Gallery";
 
-const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled }) => {
+const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product: initialProduct, disabled }) => {
   const router = useRouter();
   const { addProduct, updateProduct, setModalContent, setModalOpen } = useProductContext();
 
-  const initialFormData = product || {
+  const initialFormData: Product = initialProduct || {
+    id: 0,
     title: "",
     price: 0,
     description: "",
     category: "",
     image: [] as string[] | string,
   };
-  const [formData, setFormData] = useState(initialFormData);
-  const [isFormValid, setIsFormValid] = useState(false);
+
+  const [formData, setFormData] = useState<Product>(initialFormData);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
   useEffect(() => {
     const isValid =
@@ -43,14 +45,18 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isFormValid) {
-      if (product) {
-        const updatedProduct = await updateProductService(product.id, formData);
-        updateProduct(updatedProduct);
-      } else {
-        const newProduct = await createProduct(formData);
-        addProduct(newProduct);
+      try {
+        if (initialProduct) {
+          const updatedProduct = await updateProductService(initialProduct.id, formData);
+          updateProduct(updatedProduct);
+        } else {
+          const newProduct = await createProduct(formData);
+          addProduct(newProduct);
+        }
+        onClose();
+      } catch (error) {
+        console.error("Error al guardar el producto:", error);
       }
-      onClose();
     } else {
       alert("Por favor completa todos los campos obligatorios antes de guardar.");
     }
@@ -59,11 +65,11 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
   const imagesArray = Array.isArray(formData.image) ? formData.image : [formData.image];
 
   const handleEditProduct = () => {
-    if (product) router.push(`/products/edit/${product.id}`);
+    if (initialProduct) router.push(`/products/edit/${initialProduct.id}`);
   };
 
   const handleViewProduct = () => {
-    if (product) router.push(`/products/${product.id}`);
+    if (initialProduct) router.push(`/products/${initialProduct.id}`);
   };
 
   const goToBack = () => {
@@ -76,21 +82,22 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
   };
 
   const handleDeleteProductClick = () => {
-    console.log("handleDeleteProductClick");
-    setModalContent(<DeleteConfirmation productId={product.id} onClose={handleCloseModal} />);
-    setModalOpen(true);
+    if (initialProduct) {
+      setModalContent(<DeleteConfirmation productId={initialProduct.id} onClose={handleCloseModal} />);
+      setModalOpen(true);
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg pt-12">
       <div className="flex items-center justify-between mb-6">
         <div className="flex justify-center items-center">
-        <Button onClick={goToBack} className="w-10 rounded-xl	 bg-soft-blue" srcImg="/assets/icons/arrow.svg" />
-        <h1 className="text-2xl font-bold ml-2">{formData.title || "Nuevo Producto"}</h1>
+          <Button onClick={goToBack} className="w-10 rounded-xl bg-soft-blue" srcImg="/assets/icons/arrow.svg" />
+          <h1 className="text-2xl font-bold ml-2">{formData.title || "Nuevo Producto"}</h1>
         </div>
         <Image src="/assets/LizitLogo.svg" alt="Logo" width={50} height={24} />
       </div>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="flex space-x-6">
           <div className="flex-1">
@@ -158,9 +165,7 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
               />
             </div>
           </div>
-          <div className="flex-1 p-4 rounded-lg">
-            {imagesArray.length > 0 && <Gallery images={imagesArray} />}
-          </div>
+          <div className="flex-1 p-4 rounded-lg">{imagesArray.length > 0 && <Gallery images={imagesArray} />}</div>
         </div>
         <div className="flex justify-end mt-6">
           {disabled ? (
@@ -170,16 +175,20 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
                 onClick={goToBack}
                 className="p-2 border border-indigo-500 rounded-full text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white"
               />
-              <Button
-                label="Eliminar"
-                className="text-white py-2 px-4 rounded-full bg-red-500 hover:bg-red-700 text-xs ml-2"
-                onClick={handleDeleteProductClick}
-              />
-              <Button
-                label="Editar"
-                className="text-white py-2 px-4 rounded-full bg-indigo-500 hover:bg-indigo-700 text-xs ml-2"
-                onClick={handleEditProduct}
-              />
+              {initialProduct && (
+                <>
+                  <Button
+                    label="Eliminar"
+                    className="text-white py-2 px-4 rounded-full bg-red-500 hover:bg-red-700 text-xs ml-2"
+                    onClick={handleDeleteProductClick}
+                  />
+                  <Button
+                    label="Editar"
+                    className="text-white py-2 px-4 rounded-full bg-indigo-500 hover:bg-indigo-700 text-xs ml-2"
+                    onClick={handleEditProduct}
+                  />
+                </>
+              )}
             </>
           ) : (
             <>
