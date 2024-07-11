@@ -18,24 +18,38 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
 
   const addProduct = (product: Product) => {
-    setProducts([...products, product]);
+    const updatedProducts = [...products, product];
+    setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   const updateProduct = (updatedProduct: Product) => {
-    setProducts(products.map((product) => (product.id === updatedProduct.id ? updatedProduct : product)));
+    const updatedProducts = products.map((product) =>
+      product.id === updatedProduct.id ? updatedProduct : product
+    );
+    setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   const deleteProduct = (id: number) => {
-    setProducts(products.filter((product) => product.id !== id));
+    const updatedProducts = products.filter((product) => product.id !== id);
+    setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   const loadProducts = async () => {
     const products = await fetchProducts();
     setProducts(products);
+    localStorage.setItem("products", JSON.stringify(products));
   };
 
   useEffect(() => {
-    loadProducts();
+    const localStorageProducts = localStorage.getItem("products");
+    if (localStorageProducts) {
+      setProducts(JSON.parse(localStorageProducts));
+    } else {
+      loadProducts();
+    }
   }, []);
 
   return (

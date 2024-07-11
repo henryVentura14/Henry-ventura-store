@@ -2,13 +2,13 @@ import Image from "next/image";
 import React from "react";
 import Button from "../Shared/Button";
 import { useProductContext } from "../../context/ProductContext";
-import CreateEditForm from "../Products/Forms/CreateEditForm";
+import CreateForm from "./Forms/CreateForm";
 
 export default function Header() {
   const { setModalOpen, setModalContent } = useProductContext();
 
   const handleNewProductClick = () => {
-    setModalContent(<CreateEditForm onClose={handleCloseModal} />);
+    setModalContent(<CreateForm onClose={handleCloseModal} />);
     setModalOpen(true);
   };
 

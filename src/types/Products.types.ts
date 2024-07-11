@@ -16,6 +16,7 @@ export interface Product {
 export interface CreateEditFormProps {
   onClose: () => void;
   product?: any;
+  disabled?: boolean;
 }
 
 export interface DeleteConfirmationProps {
@@ -34,6 +35,7 @@ export interface ButtonProps {
   className?: string;
   srcImg?: string;
   type?: 'button' | 'submit';
+  disabled?: boolean;
 }
 
 export interface ProductContextType {

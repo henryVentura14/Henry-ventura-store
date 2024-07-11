@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useProductContext } from "../../context/ProductContext";
-import { fetchProducts } from "../../services/productService";
 import Header from "./Header";
 import SearchBar from "./SearchBar";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/products.utils";
 import DeleteConfirmation from "./Forms/DeleteConfirmation";
+import { Product } from "@/types/Products.types";
 
 const ProductList = () => {
-  const { products, setProducts, setModalContent, setModalOpen } = useProductContext();
-  const [filteredProducts, setFilteredProducts] = useState(products);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const productsFromAPI = await fetchProducts();
-      setProducts(productsFromAPI);
-    };
-    getProducts();
-  }, [setProducts]);
+  const { products, setModalContent, setModalOpen } = useProductContext();
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
   useEffect(() => {
     setFilteredProducts(products);
@@ -77,7 +69,7 @@ const ProductList = () => {
                 <Link href={`/products/${product.id}`} className="text-white bg-blue-500 hover:bg-blue-700 rounded-full py-2 px-4">
                   Ver
                 </Link>
-                <Link href={`/products/${product.id}`}>
+                <Link href={`/products/edit/${product.id}`}>
                   <Image src="/assets/icons/edit.svg" alt="edit" width={24} height={24} />
                 </Link>
                 <button type="button" onClick={() => handleDeleteProductClick(product.id)}>

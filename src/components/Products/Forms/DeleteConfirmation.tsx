@@ -2,6 +2,7 @@ import React from 'react';
 import { useProductContext } from '../../../context/ProductContext';
 import { deleteProduct as deleteProductService } from '../../../services/productService';
 import { DeleteConfirmationProps } from '@/types/Products.types';
+import Button from '@/components/Shared/Button';
 
 
 const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({ productId, onClose }) => {
@@ -15,11 +16,10 @@ const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({ productId, onCl
 
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">Confirm Delete</h2>
-      <p>Are you sure you want to delete this product?</p>
+      <p>¿Está seguro que desea eliminar el producto?</p>
       <div className="flex justify-end mt-4">
-        <button type="button" onClick={onClose} className="mr-2 p-2 border border-gray-300 rounded">Cancel</button>
-        <button type='button' onClick={handleDelete} className="p-2 bg-red-500 text-white rounded">Delete</button>
+        <Button label='Cancelar' type="button" onClick={onClose} className="mr-2 p-2 border border-indigo-500 rounded-full text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white"/>
+        <Button label='Confirmar' type='button' onClick={handleDelete} className="p-2 bg-red-500 text-white rounded-full hover:bg-red-700"/>
       </div>
     </div>
   );
