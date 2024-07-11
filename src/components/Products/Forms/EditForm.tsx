@@ -6,6 +6,7 @@ import Image from "next/image";
 import { CreateEditFormProps } from "@/types/Products.types";
 import Button from "@/components/Shared/Button";
 import DeleteConfirmation from "./DeleteConfirmation";
+import Gallery from "../../Shared/Gallery";
 
 const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled }) => {
   const router = useRouter();
@@ -19,8 +20,6 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
     image: [] as string[] | string,
   };
   const [formData, setFormData] = useState(initialFormData);
-  const [imageLink, setImageLink] = useState("");
-  const [isLinkValid, setIsLinkValid] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
@@ -41,26 +40,6 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
     });
   };
 
-  const handleAddImage = () => {
-    if (isLinkValid && formData.image.length < 5) {
-      setFormData({
-        ...formData,
-        image: [...formData.image, imageLink],
-      });
-      setImageLink("");
-      setIsLinkValid(false);
-    }
-  };
-
-  const handleRemoveImage = (index: number) => {
-    const updatedImages = [...formData.image];
-    updatedImages.splice(index, 1);
-    setFormData({
-      ...formData,
-      image: updatedImages,
-    });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isFormValid) {
@@ -77,15 +56,6 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
     }
   };
 
-  const validateImageLink = (link: string) => {
-    try {
-      new URL(link);
-      setIsLinkValid(true);
-    } catch (error) {
-      setIsLinkValid(false);
-    }
-  };
-
   const imagesArray = Array.isArray(formData.image) ? formData.image : [formData.image];
 
   const handleEditProduct = () => {
@@ -94,6 +64,10 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
 
   const handleViewProduct = () => {
     if (product) router.push(`/products/${product.id}`);
+  };
+
+  const goToBack = () => {
+    router.push(`/`);
   };
 
   const handleCloseModal = () => {
@@ -108,7 +82,15 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg">
+    <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg pt-12">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex justify-center items-center">
+        <Button onClick={goToBack} className="w-10 rounded-xl	 bg-soft-blue" srcImg="/assets/icons/arrow.svg" />
+        <h1 className="text-2xl font-bold ml-2">{formData.title || "Nuevo Producto"}</h1>
+        </div>
+        <Image src="/assets/LizitLogo.svg" alt="Logo" width={50} height={24} />
+      </div>
+      
       <form onSubmit={handleSubmit}>
         <div className="flex space-x-6">
           <div className="flex-1">
@@ -176,57 +158,8 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
               />
             </div>
           </div>
-          <div className="flex-1 bg-blue-100 p-4 rounded-lg">
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-blue-400 mb-2">Imágenes</label>
-              <span className="text-sm text-gray-600 mt-2 mb-2">
-                Añada los links de las imágenes relacionadas al producto.
-              </span>
-              <div className="flex space-x-1 mt-2">
-                <input
-                  type="text"
-                  value={imageLink}
-                  onChange={(e) => {
-                    setImageLink(e.target.value);
-                    validateImageLink(e.target.value);
-                  }}
-                  className={`p-3 border border-gray-300 rounded-2xl w-full h-9 text-sm ${
-                    disabled ? "bg-gray-200" : ""
-                  }`}
-                  placeholder="Añadir link de imagen"
-                  disabled={disabled}
-                />
-                <Button
-                  label="Agregar"
-                  onClick={handleAddImage}
-                  disabled={!isLinkValid || formData.image.length >= 5 || disabled}
-                  className={`text-white rounded-full bg-blue-500 w-16 h-9 px-2 ${
-                    !isLinkValid || formData.image.length >= 5 || disabled ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                />
-              </div>
-            </div>
-            <div className="flex space-x-2 overflow-x-auto">
-              {imagesArray.map((image: string, index: number) => (
-                <div key={index} className="relative w-24 h-24 flex-shrink-0">
-                  <Image
-                    src={image}
-                    alt={`Imagen ${index}`}
-                    width={96}
-                    height={96}
-                    className="h-24 w-24 object-cover rounded"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(index)}
-                    className="absolute top-0 right-0 rounded-full bg-red-500 text-white p-1"
-                    disabled={disabled}
-                  >
-                    X
-                  </button>
-                </div>
-              ))}
-            </div>
+          <div className="flex-1 p-4 rounded-lg">
+            {imagesArray.length > 0 && <Gallery images={imagesArray} />}
           </div>
         </div>
         <div className="flex justify-end mt-6">
@@ -234,7 +167,7 @@ const EditForm: React.FC<CreateEditFormProps> = ({ onClose, product, disabled })
             <>
               <Button
                 label="Volver"
-                onClick={onClose}
+                onClick={goToBack}
                 className="p-2 border border-indigo-500 rounded-full text-indigo-500 bg-transparent hover:bg-indigo-500 hover:text-white"
               />
               <Button

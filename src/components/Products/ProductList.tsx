@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useProductContext } from "../../context/ProductContext";
-import Header from "./Header";
+import Header from "../Shared/Header";
 import SearchBar from "./SearchBar";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/products.utils";
@@ -65,15 +65,15 @@ const ProductList = () => {
               <td className="my-1 px-4">{product.category}</td>
               <td className="my-1 px-4 max-w-[230px] line-clamp-2">{product.description}</td>
               <td className="my-1 px-4">{formatCurrency(product.price)}</td>
-              <td className="my-1 px-4 flex space-x-3">
+              <td className="my-1 px-4 flex space-x-3 justify-center items-center">
                 <Link href={`/products/${product.id}`} className="text-white bg-blue-500 hover:bg-blue-700 rounded-full py-2 px-4">
                   Ver
                 </Link>
                 <Link href={`/products/edit/${product.id}`}>
-                  <Image src="/assets/icons/edit.svg" alt="edit" width={24} height={24} />
+                  <Image src="/assets/icons/edit.svg" alt="edit" width={26} height={26} />
                 </Link>
                 <button type="button" onClick={() => handleDeleteProductClick(product.id)}>
-                  <Image src="/assets/icons/trash.svg" alt="delete" width={24} height={24} />
+                  <Image src="/assets/icons/trash.svg" alt="delete" width={26} height={26} />
                 </button>
               </td>
             </tr>

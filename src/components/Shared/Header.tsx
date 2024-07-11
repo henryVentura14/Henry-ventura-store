@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React from "react";
-import Button from "../Shared/Button";
+import Button from "./Button";
 import { useProductContext } from "../../context/ProductContext";
-import CreateForm from "./Forms/CreateForm";
+import CreateForm from "../Products/Forms/CreateForm";
 
 export default function Header() {
   const { setModalOpen, setModalContent } = useProductContext();

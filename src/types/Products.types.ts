@@ -30,7 +30,7 @@ export interface SearchBarProps {
 }
 
 export interface ButtonProps {
-  label: string;
+  label?: string;
   onClick?: () => void;
   className?: string;
   srcImg?: string;

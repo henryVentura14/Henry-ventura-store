@@ -6,8 +6,10 @@ import Modal from "@/components/Shared/Modal";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ProductProvider>
-      <Component {...pageProps} />
-      <Modal />
+      <div className="bg-gray-100 min-h-screen w-full">
+        <Component {...pageProps} />
+        <Modal />
+      </div>
     </ProductProvider>
   );
 }

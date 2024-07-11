@@ -6,6 +6,11 @@
 :root {
   --purlple: #5954d2;
   --blue: #3478d7;
+  --soft-blue: #D5E3F7;
+}
+
+.bg-soft-blue {
+  background-color: var(--soft-blue);
 }
 
 body {
