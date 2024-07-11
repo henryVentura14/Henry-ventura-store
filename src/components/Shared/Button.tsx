@@ -2,9 +2,10 @@ import { ButtonProps } from '@/types/Products.types';
 import Image from 'next/image';
 import React from 'react';
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, className, srcImg }) => {
+const Button: React.FC<ButtonProps> = ({ label, onClick, className, srcImg, type = "button" }) => {
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`primary-button ${className}`}
     > 

@@ -62,7 +62,7 @@ const ProductList = () => {
             <tr key={product.id}>
               <td className="py-2 px-4 rounded">
                 <Image
-                  src={product.image}
+                  src={Array.isArray(product.image) ? product.image[0] : product.image}
                   alt={product.title}
                   width={32}
                   height={32}

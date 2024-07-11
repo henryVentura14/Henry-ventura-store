@@ -13,7 +13,7 @@ const Modal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-90">
-      <div className="bg-white p-4 rounded-3xl">
+      <div className="bg-white p-4 rounded-3xl w-auto">
         <div className='flex items-center justify-end py-2'>
         <button type='button' onClick={handleClose}>
           <Image src="/assets/icons/close.svg" alt="Logo" width={26} height={26} />

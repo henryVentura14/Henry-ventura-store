@@ -3,6 +3,16 @@ export interface Rating {
   count: number;
 }
 
+export interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string | string[];
+  rating: Rating;
+}
+
 export interface CreateEditFormProps {
   onClose: () => void;
   product?: any;
@@ -23,16 +33,7 @@ export interface ButtonProps {
   onClick?: () => void;
   className?: string;
   srcImg?: string;
-}
-
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: Rating;
+  type?: 'button' | 'submit';
 }
 
 export interface ProductContextType {
