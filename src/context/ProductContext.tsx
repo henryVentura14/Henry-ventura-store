@@ -24,7 +24,9 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateProduct = (updatedProduct: Product) => {
-    const updatedProducts = products.map((product) => (product.id === updatedProduct.id ? updatedProduct : product));
+    const updatedProducts = products.map((product) =>
+      product.id === updatedProduct.id ? updatedProduct : product
+    );
     setProducts(updatedProducts);
     localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
@@ -37,20 +39,21 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
 
   const loadProducts = useCallback(async () => {
     try {
-      const localStorageProducts = localStorage.getItem("products");
-      if (localStorageProducts) {
-        setProducts(JSON.parse(localStorageProducts));
-      } else {
-        const fetchedProducts = await fetchProducts();
-        localStorage.setItem("products", JSON.stringify(fetchedProducts));
-      }
+      const products = await fetchProducts();
+      setProducts(products);
+      localStorage.setItem("products", JSON.stringify(products));
     } catch (error) {
       console.error("Error loading products:", error);
     }
   }, []);
 
   useEffect(() => {
-    loadProducts();
+    const localStorageProducts = localStorage.getItem("products");
+    if (localStorageProducts) {
+      setProducts(JSON.parse(localStorageProducts));
+    } else {
+      loadProducts();
+    }
   }, [loadProducts]);
 
   const contextValue: ProductContextType = {
@@ -66,5 +69,9 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     setModalOpen,
   };
 
-  return <ProductContext.Provider value={contextValue}>{children}</ProductContext.Provider>;
+  return (
+    <ProductContext.Provider value={contextValue}>
+      {children}
+    </ProductContext.Provider>
+  );
 };
