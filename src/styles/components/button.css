@@ -1,0 +1,11 @@
+.primary-button {
+  background-color: var(--purlple);
+  font-family: "InterstateBold", sans-serif;
+  width: 165px;
+  height: 40px;
+  justify-content: space-evenly;
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  line-height: 14px;
+}
