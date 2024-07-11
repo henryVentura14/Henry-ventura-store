@@ -12,7 +12,7 @@ const Modal: React.FC = () => {
   if (!isModalOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-90">
       <div className="bg-white p-4 rounded-3xl">
         <div className='flex items-center justify-end py-2'>
         <button type='button' onClick={handleClose}>

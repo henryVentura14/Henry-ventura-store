@@ -77,7 +77,7 @@ const ProductList = () => {
                 <Link href={`/products/${product.id}`} className="text-white bg-blue-500 hover:bg-blue-700 rounded-full py-2 px-4">
                   Ver
                 </Link>
-                <Link href={`/products/edit/${product.id}`}>
+                <Link href={`/products/${product.id}`}>
                   <Image src="/assets/icons/edit.svg" alt="edit" width={24} height={24} />
                 </Link>
                 <button type="button" onClick={() => handleDeleteProductClick(product.id)}>

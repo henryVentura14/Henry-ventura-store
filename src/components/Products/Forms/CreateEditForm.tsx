@@ -130,13 +130,6 @@ const CreateEditForm: React.FC<CreateEditFormProps> = ({ onClose, product }) => 
               {imagesArray.map((image: string, index: number) => (
                 <div key={index} className="relative w-24 h-24 flex-shrink-0">
                   <Image src={image} alt={`Imagen ${index + 1}`} className="w-full h-full object-cover rounded" />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(index)}
-                    className="absolute top-0 right-0 p-1 bg-red-500 text-white rounded-full"
-                  >
-                    &times;
-                  </button>
                 </div>
               ))}
             </div>
