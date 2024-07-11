@@ -1,4 +1,4 @@
-const API_URL = 'https://fakestoreapi.com/products';
+import { API_URL } from "@/constants/Products.contanst";
 
 export const fetchProducts = async () => {
   const response = await fetch(API_URL);

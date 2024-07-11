@@ -1,0 +1,23 @@
+@import "typography.css";
+@import "button.css";
+@import "searchBar.css";
+@import "createEditForm.css";
+@import "imageUploader.css";
+
+:root {
+  --purlple: #5954d2;
+  --blue: #3478d7;
+  --soft-blue: #D5E3F7;
+}
+
+.bg-soft-blue {
+  background-color: var(--soft-blue);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  font-family: "InterstateRegular", sans-serif;
+}

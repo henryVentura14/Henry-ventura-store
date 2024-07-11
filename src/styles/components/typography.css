@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "InterstateRegular";
+  src: url("../../../public/fonts/Interstate/Interstate-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "InterstateBold";
+  src: url("../../../public/fonts/Interstate/Interstate-bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "InterstateLight";
+  src: url("../../../public/fonts/Interstate/Interstate-light.ttf") format("truetype");
+  font-weight: lighter;
+  font-style: normal;
+}
+
+.interstate-regular {
+  font-family: "InterstateRegular", sans-serif;
+  font-weight: 400;
+}
+
+.interstate-bold {
+  font-family: "InterstateBold", sans-serif;
+  font-weight: 700;
+}
+
+.interstate-light {
+  font-family: "InterstateLight", sans-serif;
+  font-weight: 300;
+}

@@ -1,12 +1,15 @@
-import { ProductProvider } from '../context/ProductContext';
-import ProductList from '../components/ProductList';
+import { ProductProvider } from "../context/ProductContext";
+import ProductList from "../components/Products/ProductList";
+import Modal from "../components/Shared/Modal";
 
 const Home = () => {
   return (
     <ProductProvider>
-      <div className="container mx-auto p-4">
-        <h1 className="text-4xl font-bold text-center mb-8 text-blue-600">Product List</h1>
-        <ProductList />
+      <div className="min-h-screen bg-gray-100 p-4">
+        <div className="mx-auto">
+          <ProductList />
+          <Modal />
+        </div>
       </div>
     </ProductProvider>
   );
